@@ -24,7 +24,7 @@ intents.message_content = True
 # This is a sub class of 'discord.Client' and as a result 
 # anything you can do with 'discord.Client' you can do with this bot.
 
-bot = commands.Bot(command_prefix = "$", intents = intents)
+bot = commands.Bot(command_prefix = "!", intents = intents)
 
 
 # On start up
