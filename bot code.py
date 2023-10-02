@@ -55,18 +55,7 @@ async def print(ctx, *args):
             response = response + " " + arg
         await ctx.channel.send(response)
     return
-
-# API request test
-@bot.command(name = "dog")
-async def dog_image(ctx):
-    async with aiohttp.ClientSession() as cs:
-        async with cs.get("https://dog.ceo/api/breeds/image/random") as r:
-            data = await r.json()
-            embed = discord.Embed(title = "Woof")
-            embed.set_image(url = data['message'])
-            await ctx.send(embed = embed)
-
-
+	
 ### ---------- Forward slash commands ---------- ### 
 
 # Returns a greeting along with a tagged/mentioned username of the user
@@ -79,55 +68,6 @@ async def hello(interaction:discord.Interaction):
 @app_commands.describe(thing_to_say = "What should I say?")
 async def say(interaction:discord.Interaction, thing_to_say:str):
     await interaction.response.send_message(f"{interaction.user.name} said: `{thing_to_say}`")
-
-# Grabs a random image of a dog
-@bot.tree.command(name="dog")
-async def dog(interaction: discord.Interaction):
-    url = "https://dog.ceo/api/breeds/image/random"
-    async with aiohttp.ClientSession() as cs:
-        async with cs.get(url) as r:
-            data = await r.json()
-            embed = discord.Embed(title = "Woof")
-            embed.set_image(url = data['message'])
-            await interaction.response.send_message(embed = embed)
-
-# Passes keywords as a parameter to search through the steam API and returns the first game found.
-@bot.tree.command(name="steam_search")
-@app_commands.describe(key_word = "What to search?")
-async def steam_search(interaction:discord.Interaction, key_word:str):
-    url = f"https://steam2.p.rapidapi.com/search/{key_word}/page/1"
-    headers = {
-	"X-RapidAPI-Key": os.environ.get('RAPID_API_KEY'),
-	"X-RapidAPI-Host": "steam2.p.rapidapi.com"
-    }
-    try:
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(url, headers = headers) as r:
-                data = await r.json()
-                await interaction.response.send_message(str(data[0]['url']))
-    except Exception as e:
-        await interaction.response.send_message(f"Unable to find `{key_word}`.", ephemeral=True)
-
-# Translator API
-@bot.tree.command(name="translate_text")
-@app_commands.describe(language = "Which language?", source_text = "What would you like translated?")
-async def translate_text(interaction:discord.Interaction, language:str, source_text:str):
-    url = "https://text-translator2.p.rapidapi.com/translate"
-    payload = f"source_language=en&target_language={language}&text={source_text}"
-    headers = {
-    "content-type": "application/x-www-form-urlencoded",
-	"X-RapidAPI-Key": os.environ.get('RAPID_API_KEY'),
-	"X-RapidAPI-Host": "text-translator2.p.rapidapi.com"
-    }
-    try:
-        async with aiohttp.ClientSession() as cs:
-            async with cs.post(url, data = payload, headers = headers) as r:
-                data = await r.json()
-                await interaction.response.send_message(f"{data['data']['translatedText']}")
-    except Exception as e:
-        await interaction.response.send_message("Failed attempt", ephemeral=True)
-
-
 
 # Run the bot
 bot.run(os.environ.get('TOKEN'))
