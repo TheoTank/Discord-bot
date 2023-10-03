@@ -70,4 +70,4 @@ async def say(interaction:discord.Interaction, thing_to_say:str):
     await interaction.response.send_message(f"{interaction.user.name} said: `{thing_to_say}`")
 
 # Run the bot
-bot.run(os.environ.get('MTE1ODMzNDY0ODg3MTU1OTI1MA.Gw9IyW.jF1U0JiPZF1lqwaSlx3C6RnInfuBsJkPWlXuzE'))
+bot.run(os.environ.get('TOKEN'))
